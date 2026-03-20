@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bliss Document Solutions — Control. Compliance. Clarity.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:     #1C1C1C;
+    --slate:   #2D3748;
+    --mid:     #4A5568;
+    --steel:   #718096;
+    --silver:  #A0AEC0;
+    --rule:    #E2E8F0;
+    --light:   #F7F8FA;
+    --mist:    #EDF2F7;
+    --white:   #FFFFFF;
+    --accent:  #2D3748;
+    --ember:   #C05621;
+    --ember-l: #ED8936;
+    --text:    #1A202C;
+    --muted:   #718096;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); overflow-x: hidden; line-height: 1.6; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    background: rgba(28,28,28,0.97); backdrop-filter: blur(12px);
+    padding: 0 6%; height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .nav-logo { display: flex; align-items: center; text-decoration: none; }
+  .nav-logo svg { height: 40px; width: auto; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 0.85rem; font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--white); }
+  .nav-cta {
+    background: var(--white) !important; color: var(--ink) !important;
+    padding: 0.5rem 1.3rem; border-radius: 7px;
+    font-weight: 700 !important; font-size: 0.85rem !important;
+    transition: background 0.2s, color 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--mist) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; background: var(--ink);
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 4rem;
+    padding: 110px 6% 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 80% 50%, rgba(255,255,255,0.03) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .hero-left { position: relative; z-index: 1; }
+  .hero-pill {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.6);
+    font-size: 0.73rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border-radius: 100px; margin-bottom: 2rem;
+    opacity: 0; animation: riseUp 0.7s 0.1s forwards;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+    line-height: 1.05; color: var(--white);
+    letter-spacing: -0.03em; margin-bottom: 1.5rem;
+    opacity: 0; animation: riseUp 0.7s 0.2s forwards;
+  }
+  .hero h1 .w { color: rgba(255,255,255,0.95); }
+  .hero h1 .e { color: var(--ember-l); }
+  .hero-sub {
+    font-size: 1.05rem; color: rgba(255,255,255,0.5);
+    line-height: 1.75; max-width: 480px; margin-bottom: 2.5rem;
+    opacity: 0; animation: riseUp 0.7s 0.3s forwards;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: riseUp 0.7s 0.4s forwards; }
+  .btn-primary {
+    background: var(--white); color: var(--ink);
+    padding: 0.9rem 2rem; border-radius: 9px;
+    font-weight: 700; font-size: 0.95rem; text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .btn-ghost {
+    background: transparent; color: rgba(255,255,255,0.6);
+    padding: 0.9rem 2rem; border-radius: 9px;
+    font-weight: 500; font-size: 0.95rem; text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex; align-items: center; gap: 0.5rem;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.4); color: var(--white); }
+
+  /* Hero right — logo panel */
+  .hero-right {
+    position: relative; z-index: 1;
+    opacity: 0; animation: riseRight 0.8s 0.5s forwards;
+  }
+  .hero-logo-panel {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px; padding: 2.5rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-logo-panel::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  }
+  .hero-logo-panel svg { width: 100%; height: auto; display: block; }
+
+  /* ── TRUST STRIP ── */
+  .trust-strip {
+    background: var(--slate);
+    padding: 1.1rem 6%;
+    display: flex; align-items: center; justify-content: center;
+    gap: 3rem; flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .trust-item { display: flex; align-items: center; gap: 0.55rem; font-size: 0.82rem; font-weight: 500; color: rgba(255,255,255,0.4); }
+  .trust-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ember-l); flex-shrink: 0; }
+
+  /* ── SECTIONS ── */
+  section { padding: 96px 6%; }
+  .chip {
+    display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--ember); background: #FFF5EB;
+    padding: 0.3rem 0.9rem; border-radius: 100px; margin-bottom: 1rem;
+  }
+  .sec-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(2rem, 3.2vw, 2.75rem);
+    font-weight: 800; line-height: 1.12; letter-spacing: -0.03em; color: var(--ink); margin-bottom: 1.1rem;
+  }
+  .sec-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 540px; }
+  .sec-head { margin-bottom: 3.5rem; }
+  .sec-head.center { text-align: center; }
+  .sec-head.center .sec-sub { margin: 0 auto; }
+
+  /* ── PROBLEM ── */
+  .problem { background: var(--light); }
+  .problem-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .problem-img {
+    border-radius: 16px; overflow: hidden; aspect-ratio: 4/3;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.12); position: relative;
+  }
+  .problem-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .problem-img::after { content: ''; position: absolute; inset: 0; border-radius: 16px; border: 1px solid rgba(0,0,0,0.06); pointer-events: none; }
+  .problem-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .prob-card {
+    background: var(--white); border: 1px solid var(--rule); border-radius: 12px;
+    padding: 1.4rem 1.6rem; display: flex; gap: 1.25rem; align-items: flex-start;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .prob-card:hover { border-color: var(--silver); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .prob-icon {
+    font-size: 1.3rem; flex-shrink: 0; width: 42px; height: 42px;
+    background: var(--mist); border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prob-card h3 { font-weight: 600; font-size: 0.95rem; color: var(--ink); margin-bottom: 0.3rem; }
+  .prob-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.55; }
+
+  /* ── SERVICES ── */
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .svc-card {
+    border-radius: 16px; overflow: hidden; border: 1px solid var(--rule);
+    background: var(--white); transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .svc-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,0.09); border-color: var(--silver); }
+  .svc-card.dark { background: var(--slate); border-color: transparent; }
+  .svc-card.dark .svc-title { color: var(--white); }
+  .svc-card.dark .svc-desc { color: rgba(255,255,255,0.5); }
+  .svc-card.dark .svc-tag { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7); }
+  .svc-card.dark .svc-feat { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.07); }
+  .svc-card.dark .svc-feat::before { color: var(--ember-l); }
+  .svc-img { aspect-ratio: 16/9; overflow: hidden; }
+  .svc-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; display: block; }
+  .svc-card:hover .svc-img img { transform: scale(1.04); }
+  .svc-body { padding: 1.75rem; }
+  .svc-tag {
+    display: inline-block; background: var(--mist); color: var(--mid);
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.75rem; border-radius: 100px; margin-bottom: 0.9rem;
+  }
+  .svc-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--ink); margin-bottom: 0.65rem; }
+  .svc-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+  .svc-features { list-style: none; }
+  .svc-feat {
+    font-size: 0.82rem; color: var(--muted); padding: 0.4rem 0; border-top: 1px solid var(--rule);
+    display: flex; align-items: flex-start; gap: 0.6rem;
+  }
+  .svc-feat::before { content: '→'; color: var(--mid); flex-shrink: 0; font-size: 0.8rem; }
+
+  /* ── PROCESS ── */
+  .process { background: var(--ink); }
+  .process .chip { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); }
+  .process .sec-title { color: var(--white); }
+  .process .sec-sub { color: rgba(255,255,255,0.4); }
+  .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3.5rem; position: relative; }
+  .process-grid::before {
+    content: ''; position: absolute; top: 28px; left: 12.5%; right: 12.5%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+  }
+  .proc-card {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 2rem 1.75rem; text-align: center;
+    transition: background 0.25s, border-color 0.25s;
+  }
+  .proc-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+  .proc-num-wrap {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;
+  }
+  .proc-num { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; color: rgba(255,255,255,0.6); }
+  .proc-card h3 { font-weight: 600; font-size: 1rem; color: var(--white); margin-bottom: 0.6rem; }
+  .proc-card p { font-size: 0.85rem; color: rgba(255,255,255,0.35); line-height: 1.6; }
+
+  /* ── SECTORS ── */
+  .sectors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .sector-card { border-radius: 18px; overflow: hidden; position: relative; aspect-ratio: 16/9; }
+  .sector-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; display: block; filter: grayscale(20%); }
+  .sector-card:hover img { transform: scale(1.04); filter: grayscale(0%); }
+  .sector-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(28,28,28,0.9) 0%, rgba(28,28,28,0.2) 60%, transparent 100%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem;
+  }
+  .sector-tag {
+    display: inline-block; background: rgba(255,255,255,0.15); backdrop-filter: blur(4px);
+    color: var(--white); font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.25rem 0.75rem; border-radius: 100px; margin-bottom: 0.75rem; width: fit-content;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .sector-card h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800; color: var(--white); margin-bottom: 0.4rem; line-height: 1.2; }
+  .sector-card p { font-size: 0.85rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
+
+  /* ── BUILT FOR BUSINESS ── */
+  .built { background: var(--light); }
+  .built-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3.5rem; }
+  .built-card {
+    border-radius: 14px; overflow: hidden; border: 1px solid var(--rule);
+    background: var(--white); transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .built-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); border-color: var(--silver); }
+  .built-card-body { padding: 1.5rem 1.75rem; }
+  .built-eyebrow {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ember); margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .built-eyebrow::before { content: ''; display: block; width: 14px; height: 2px; background: var(--ember); border-radius: 2px; }
+  .built-card-body h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; color: var(--ink); margin-bottom: 0.5rem; }
+  .built-card-body p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── WHY ── */
+  .why { background: var(--white); }
+  .why-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+  .why-list { margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .why-item {
+    display: flex; gap: 1.25rem; align-items: flex-start;
+    padding: 1.25rem 1.5rem;
+    background: var(--light); border: 1px solid var(--rule); border-radius: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .why-item:hover { border-color: var(--silver); box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+  .why-num { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 800; color: var(--silver); flex-shrink: 0; width: 32px; line-height: 1; margin-top: 0.1rem; }
+  .why-item h4 { font-weight: 600; font-size: 0.95rem; color: var(--ink); margin-bottom: 0.3rem; }
+  .why-item p { font-size: 0.85rem; color: var(--muted); line-height: 1.55; }
+  /* Why right — big stat/quote panel -->*/
+  .why-right {
+    background: var(--slate); border-radius: 20px;
+    padding: 3rem; position: relative; overflow: hidden;
+  }
+  .why-right::before {
+    content: ''; position: absolute; bottom: -60px; right: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .why-quote {
+    font-family: 'Syne', sans-serif; font-size: 3.5rem; font-weight: 800;
+    color: rgba(255,255,255,0.08); line-height: 1; margin-bottom: 2rem;
+  }
+  .why-stats { display: flex; flex-direction: column; gap: 1.5rem; }
+  .why-stat { border-left: 3px solid var(--ember-l); padding-left: 1.25rem; }
+  .why-stat-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; color: var(--white); line-height: 1; }
+  .why-stat-label { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    background: var(--ink); padding: 80px 6%;
+    position: relative; overflow: hidden;
+    display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3rem;
+  }
+  .cta-band::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 50% 100% at 100% 50%, rgba(255,255,255,0.03) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-band h2 { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; color: var(--white); letter-spacing: -0.03em; line-height: 1.1; }
+  .cta-band p { font-size: 1rem; color: rgba(255,255,255,0.45); margin-top: 0.75rem; max-width: 480px; }
+  .btn-cta {
+    background: var(--white); color: var(--ink);
+    padding: 1rem 2.25rem; border-radius: 9px;
+    font-weight: 700; font-size: 0.95rem; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.35); }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--light); }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: start; }
+  .contact-details { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+  .cdet { display: flex; gap: 1rem; align-items: flex-start; }
+  .cdet-icon {
+    width: 42px; height: 42px; flex-shrink: 0;
+    background: var(--mist); border: 1px solid var(--rule); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+  }
+  .cdet strong { display: block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--silver); margin-bottom: 0.2rem; }
+  .cdet span { font-size: 0.95rem; color: var(--ink); font-weight: 500; }
+  .contact-form {
+    background: var(--white); border: 1px solid var(--rule);
+    border-radius: 16px; padding: 2.5rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1.1rem; }
+  .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--mid); margin-bottom: 0.45rem; letter-spacing: 0.03em; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 0.75rem 1rem;
+    background: var(--light); border: 1.5px solid var(--rule);
+    border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem;
+    color: var(--ink); outline: none; transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--mid); background: var(--white); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    width: 100%; padding: 0.9rem;
+    background: var(--ink); color: var(--white);
+    border: none; border-radius: 9px;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    cursor: pointer; letter-spacing: 0.02em;
+    transition: background 0.2s;
+  }
+  .form-submit:hover { background: var(--slate); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink); padding: 2.5rem 6%;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .foot-logo svg { height: 32px; width: auto; }
+  .foot-links { display: flex; gap: 2rem; }
+  .foot-links a { font-size: 0.82rem; color: rgba(255,255,255,0.25); text-decoration: none; transition: color 0.2s; }
+  .foot-links a:hover { color: rgba(255,255,255,0.7); }
+  .foot-copy { font-size: 0.75rem; color: rgba(255,255,255,0.18); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes riseUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes riseRight { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 960px) {
+    .hero { grid-template-columns: 1fr; padding-top: 110px; }
+    .hero-right { display: none; }
+    .problem-layout, .why-layout, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .services-grid, .built-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr 1fr; }
+    .process-grid::before { display: none; }
+    .sectors-grid { grid-template-columns: 1fr; }
+    .cta-band { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 480 68" xmlns="http://www.w3.org/2000/svg" height="40">
+      <defs>
+        <linearGradient id="nh" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#A0AEC0"/><stop offset="100%" stop-color="#CBD5E0"/>
+        </linearGradient>
+        <linearGradient id="nb" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ED8936"/><stop offset="100%" stop-color="#C05621"/>
+        </linearGradient>
+        <linearGradient id="nl" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#A0AEC0"/><stop offset="100%" stop-color="#A0AEC0" stop-opacity="0"/>
+        </linearGradient>
+        <filter id="nhg"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <polygon points="34,4 54,15 54,37 34,48 14,37 14,15" fill="url(#nh)" filter="url(#nhg)"/>
+      <polygon points="34,6 52,16 52,36 34,46 16,36 16,16" fill="rgba(0,0,0,0.2)"/>
+      <polygon points="34,7 51,17 51,35 34,45 17,35 17,17" fill="url(#nh)"/>
+      <rect x="24" y="17" width="5" height="28" rx="1.5" fill="white"/>
+      <path d="M29 17 L38 17 Q45 17 45 24 Q45 29 39 29.5 Q46 30 46 37 Q46 44 39 44 L29 44 Z" fill="white"/>
+      <path d="M29 20 L37 20 Q41 20 41 24 Q41 27 37 27 L29 27 Z" fill="url(#nh)"/>
+      <path d="M29 31 L38 31 Q43 31 43 37 Q43 41 38 41 L29 41 Z" fill="url(#nh)"/>
+      <path d="M58 6 L53 20 L59 20 L52 36" stroke="url(#nb)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <text x="70" y="38" font-family="Arial Black, sans-serif" font-weight="900" font-size="34" letter-spacing="-1" fill="white">BLISS</text>
+      <rect x="70" y="43" width="200" height="2" rx="1" fill="url(#nl)"/>
+      <text x="71" y="58" font-family="Arial, sans-serif" font-weight="300" font-size="11" letter-spacing="3.5" fill="rgba(255,255,255,0.45)">DOCUMENT SOLUTIONS</text>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#sectors">Sectors</a></li>
+    <li><a href="#built">Why Us</a></li>
+    <li><a href="#contact" class="nav-cta">Contact Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-left">
+    <div class="hero-pill">Professional Document Control</div>
+    <h1>Your documents.<br><span class="w">Perfectly</span><br><span class="e">controlled.</span></h1>
+    <p class="hero-sub">We build and manage professional document control systems for businesses — so the right people always have the right document, every time.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get In Touch →</a>
+      <a href="#services" class="btn-ghost">See How It Works</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-logo-panel">
+      <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hhex" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#A0AEC0"/><stop offset="100%" stop-color="#CBD5E0"/>
+          </linearGradient>
+          <linearGradient id="hbolt" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#ED8936"/><stop offset="100%" stop-color="#C05621"/>
+          </linearGradient>
+          <linearGradient id="hline" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#A0AEC0"/><stop offset="70%" stop-color="#CBD5E0"/><stop offset="100%" stop-color="#A0AEC0" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="hhg"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="htg"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="hbg2"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <clipPath id="hclip"><rect width="900" height="400"/></clipPath>
+        </defs>
+        <g opacity="0.04" stroke="white" stroke-width="1" clip-path="url(#hclip)">
+          <line x1="0" y1="100" x2="900" y2="100"/><line x1="0" y1="200" x2="900" y2="200"/>
+          <line x1="0" y1="300" x2="900" y2="300"/><line x1="225" y1="0" x2="225" y2="400"/>
+          <line x1="450" y1="0" x2="450" y2="400"/><line x1="675" y1="0" x2="675" y2="400"/>
+        </g>
+        <ellipse cx="175" cy="200" rx="130" ry="130" fill="rgba(160,174,192,0.08)"/>
+        <polygon points="175,62 258,110 258,206 175,254 92,206 92,110" fill="none" stroke="rgba(160,174,192,0.2)" stroke-width="2"/>
+        <polygon points="175,78 246,120 246,200 175,240 104,200 104,120" fill="none" stroke="rgba(160,174,192,0.1)" stroke-width="1.5"/>
+        <polygon points="175,94 238,130 238,194 175,228 112,194 112,130" fill="url(#hhex)" filter="url(#hhg)"/>
+        <polygon points="175,94 238,130 238,194 175,228 112,194 112,130" fill="rgba(0,0,0,0.2)"/>
+        <polygon points="175,96 235,131 235,193 175,226 115,193 115,131" fill="url(#hhex)"/>
+        <rect x="146" y="133" width="12" height="68" rx="3" fill="white"/>
+        <path d="M158 133 L182 133 Q202 133 202 151 Q202 164 188 165 Q204 167 204 185 Q204 203 182 203 L158 203 Z" fill="white"/>
+        <path d="M158 141 L180 141 Q193 141 193 151 Q193 158 180 158 L158 158 Z" fill="url(#hhex)"/>
+        <path d="M158 167 L181 167 Q196 167 196 184 Q196 194 181 194 L158 194 Z" fill="url(#hhex)"/>
+        <path d="M268 82 L255 122 L270 122 L254 166" stroke="url(#hbolt)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#hbg2)"/>
+        <circle cx="268" cy="80" r="5" fill="#ED8936" opacity="0.9"/>
+        <text x="300" y="197" font-family="Arial Black, sans-serif" font-weight="900" font-size="100" letter-spacing="-3" fill="white" filter="url(#htg)">BLISS</text>
+        <rect x="300" y="213" width="560" height="3.5" rx="2" fill="url(#hline)"/>
+        <text x="303" y="248" font-family="Arial, sans-serif" font-weight="300" font-size="25" letter-spacing="8" fill="rgba(255,255,255,0.55)">DOCUMENT SOLUTIONS</text>
+        <rect x="300" y="278" width="456" height="38" rx="19" fill="rgba(255,255,255,0.04)" stroke="rgba(160,174,192,0.25)" stroke-width="1.5"/>
+        <circle cx="424" cy="297" r="3" fill="rgba(237,137,54,0.6)"/>
+        <circle cx="556" cy="297" r="3" fill="rgba(237,137,54,0.6)"/>
+        <text x="490" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-weight="600" font-size="13" letter-spacing="3.5" fill="rgba(255,255,255,0.45)">CONTROL · COMPLIANCE · CLARITY</text>
+        <text x="302" y="350" font-family="Arial, sans-serif" font-weight="300" font-size="13" letter-spacing="2" fill="rgba(160,174,192,0.4)">blissdocuments.co.uk</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-item"><div class="trust-dot"></div>Version Control & Audit Trails</div>
+  <div class="trust-item"><div class="trust-dot"></div>UK Legal Retention Schedules</div>
+  <div class="trust-item"><div class="trust-dot"></div>Master Document Register</div>
+  <div class="trust-item"><div class="trust-dot"></div>Review Cycle Management</div>
+  <div class="trust-item"><div class="trust-dot"></div>Built for Business</div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="about">
+  <div class="problem-layout">
+    <div class="problem-img">
+      <img src="https://images.stockcake.com/public/1/3/b/13bda6fd-f171-4b22-9919-ce02420fd69e_medium/analyzing-business-data-stockcake.jpg" alt="Analysing business documents" loading="lazy">
+    </div>
+    <div>
+      <div class="sec-head">
+        <span class="chip">The Problem</span>
+        <h2 class="sec-title">When documents fail,<br>real damage follows</h2>
+        <p class="sec-sub">Most businesses treat documents as an afterthought. Until something goes wrong.</p>
+      </div>
+      <div class="problem-cards">
+        <div class="prob-card">
+          <div class="prob-icon">📄</div>
+          <div>
+            <h3>Outdated documents still in use</h3>
+            <p>Staff working from superseded procedures is one of the most common causes of operational errors — and one of the easiest to prevent with a properly controlled system.</p>
+          </div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-icon">✍️</div>
+          <div>
+            <h3>Wrong contract version sent</h3>
+            <p>A business sent a client an unsigned draft instead of the executed contract. The client disputed terms. Legal costs mounted. One controlled system stops this.</p>
+          </div>
+        </div>
+        <div class="prob-card">
+          <div class="prob-icon">🔴</div>
+          <div>
+            <h3>Audit and compliance failure</h3>
+            <p>A quality manual several versions behind led to multiple non-conformances and suspended certification. We keep your documents current, traceable and ready for scrutiny.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="sec-head center">
+    <span class="chip">What We Do</span>
+    <h2 class="sec-title">Document control, end to end</h2>
+    <p class="sec-sub">From building your system from scratch to maintaining it on an ongoing retainer — we handle every stage of the lifecycle.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card">
+      <div class="svc-img">
+        <img src="https://images.stockcake.com/public/6/c/7/6c70fb0a-b45e-4665-a5f8-8e5d2ca2813a_medium/business-strategy-discussion-stockcake.jpg" alt="System setup" loading="lazy">
+      </div>
+      <div class="svc-body">
+        <div class="svc-tag">System Build</div>
+        <h3 class="svc-title">Document System Setup</h3>
+        <p class="svc-desc">We design and build your entire document control infrastructure — numbering conventions, folder structures, templates, and Master Document Register — from scratch.</p>
+        <ul class="svc-features">
+          <li class="svc-feat">Custom document numbering system</li>
+          <li class="svc-feat">Master Document Register (Excel/SharePoint)</li>
+          <li class="svc-feat">Controlled document templates</li>
+          <li class="svc-feat">Document Authority Matrix</li>
+        </ul>
+      </div>
+    </div>
+    <div class="svc-card dark">
+      <div class="svc-img">
+        <img src="https://images.stockcake.com/public/a/a/6/aa67643d-ad2c-4b38-a9e2-e03c750f1347_medium/contract-signing-meeting-stockcake.jpg" alt="Ongoing control" loading="lazy">
+      </div>
+      <div class="svc-body">
+        <div class="svc-tag">Most Popular</div>
+        <h3 class="svc-title">Ongoing Document Controller</h3>
+        <p class="svc-desc">We act as your outsourced Document Controller on a monthly retainer — managing review cycles, issuing documents, chasing approvals, and keeping your MDR live week after week.</p>
+        <ul class="svc-features">
+          <li class="svc-feat">Weekly MDR review and maintenance</li>
+          <li class="svc-feat">Review reminders and escalations</li>
+          <li class="svc-feat">Document issue and distribution</li>
+          <li class="svc-feat">Full audit trail management</li>
+        </ul>
+      </div>
+    </div>
+    <div class="svc-card">
+      <div class="svc-img">
+        <img src="https://images.stockcake.com/public/c/f/3/cf381936-dc20-4617-91ed-72f6a44e42e3_medium/opportunity-handshake-moment-stockcake.jpg" alt="Document audit" loading="lazy">
+      </div>
+      <div class="svc-body">
+        <div class="svc-tag">Audit & Review</div>
+        <h3 class="svc-title">Document Audit & Clean-Up</h3>
+        <p class="svc-desc">Got a backlog of inconsistent, outdated or duplicated documents? We audit everything you have, identify what needs fixing, and bring your entire document library up to standard.</p>
+        <ul class="svc-features">
+          <li class="svc-feat">Full document inventory and gap analysis</li>
+          <li class="svc-feat">Version history review and consolidation</li>
+          <li class="svc-feat">Ownership and review date assignment</li>
+          <li class="svc-feat">Clean, organised handover to your team</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="sec-head center">
+    <span class="chip">How It Works</span>
+    <h2 class="sec-title">From chaos to controlled<br>in four steps</h2>
+    <p class="sec-sub">Most clients go from "documents everywhere" to a fully controlled system within 2–4 weeks.</p>
+  </div>
+  <div class="process-grid">
+    <div class="proc-card">
+      <div class="proc-num-wrap"><span class="proc-num">01</span></div>
+      <h3>Document Review</h3>
+      <p>We review your current document landscape — what exists, what's missing, what's duplicated, and what the risks are.</p>
+    </div>
+    <div class="proc-card">
+      <div class="proc-num-wrap"><span class="proc-num">02</span></div>
+      <h3>System Design</h3>
+      <p>We design your numbering system, folder structure, templates, and Authority Matrix — tailored to your sector and size.</p>
+    </div>
+    <div class="proc-card">
+      <div class="proc-num-wrap"><span class="proc-num">03</span></div>
+      <h3>Build & Migration</h3>
+      <p>We migrate your existing documents into the new system, assign IDs, set review dates, and populate your MDR.</p>
+    </div>
+    <div class="proc-card">
+      <div class="proc-num-wrap"><span class="proc-num">04</span></div>
+      <h3>Ongoing Management</h3>
+      <p>Monthly retainer keeps your system live — review cycles managed, documents issued, audit trail maintained.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SECTORS -->
+<section id="sectors">
+  <div class="sec-head">
+    <span class="chip">Who We Work With</span>
+    <h2 class="sec-title">Built for business</h2>
+    <p class="sec-sub">Wherever documents matter — we keep them controlled, compliant, and clear.</p>
+  </div>
+  <div class="sectors-grid">
+    <div class="sector-card">
+      <img src="https://images.stockcake.com/public/d/6/9/d698fe1d-a551-4f91-8f2f-c778edb7835b_large/startup-pitch-success-stockcake.jpg" alt="Growing businesses" loading="lazy">
+      <div class="sector-overlay">
+        <span class="sector-tag">Startups & SMBs</span>
+        <h3>Growing Businesses</h3>
+        <p>Professional document infrastructure that scales with you — from investor-ready policy documents to fully controlled quality management systems.</p>
+      </div>
+    </div>
+    <div class="sector-card">
+      <img src="https://images.stockcake.com/public/3/b/e/3be8094b-9fa5-49aa-9264-6fe09b371d69_large/contract-finalization-moment-stockcake.jpg" alt="Professional services" loading="lazy">
+      <div class="sector-overlay">
+        <span class="sector-tag">Professional Services</span>
+        <h3>Professional Services</h3>
+        <p>From compliance-heavy regulated industries to fast-growing service firms — we bring structure, clarity and control to every document your business relies on.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILT FOR BUSINESS -->
+<section class="built" id="built">
+  <div class="sec-head center">
+    <span class="chip">Built for Business</span>
+    <h2 class="sec-title">This is all we do</h2>
+    <p class="sec-sub">We're not a generalist admin service. Document control is our specialism — and that matters when your business depends on having the right document in the right hands at the right time.</p>
+  </div>
+  <div class="built-grid">
+    <div class="built-card">
+      <div class="built-card-body">
+        <div class="built-eyebrow">Expertise</div>
+        <h3>Sector-specific knowledge</h3>
+        <p>We understand the regulatory context your documents operate in — compliance frameworks, legal retention requirements, UK GDPR, and industry-specific standards that govern how documents must be managed.</p>
+      </div>
+    </div>
+    <div class="built-card">
+      <div class="built-card-body">
+        <div class="built-eyebrow">Methodology</div>
+        <h3>System first, documents second</h3>
+        <p>We don't just tidy folders. We build the architecture — numbering, register, templates, authority matrix — before touching a single document.</p>
+      </div>
+    </div>
+    <div class="built-card">
+      <div class="built-card-body">
+        <div class="built-eyebrow">Compliance</div>
+        <h3>Traceable at all times</h3>
+        <p>Every action logged, every version archived, every approval recorded. If scrutiny arrives tomorrow, your documentation trail is complete and watertight.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why">
+  <div class="why-layout">
+    <div>
+      <div class="sec-head">
+        <span class="chip">Why Bliss</span>
+        <h2 class="sec-title">The retainer that<br>pays for itself</h2>
+        <p class="sec-sub">Without someone actively managing your review cycle, documents go stale. The cost of a failed audit, a disputed contract, or an operational error always outweighs the cost of prevention.</p>
+      </div>
+      <div class="why-list">
+        <div class="why-item">
+          <div class="why-num">01</div>
+          <div>
+            <h4>We own your compliance calendar</h4>
+            <p>Every review date tracked, every overdue document chased, every new version issued. You focus on running your business.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">02</div>
+          <div>
+            <h4>UK legal compliance built in</h4>
+            <p>Retention schedules based on UK law — Companies Act, HMRC, UK GDPR, Health and Safety at Work Act — so your records are kept exactly as long as required.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">03</div>
+          <div>
+            <h4>Transparent, retainer-based pricing</h4>
+            <p>No surprise consultancy fees. Packages priced for businesses of all sizes. Enquire for a tailored quote.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="why-right">
+      <div class="why-quote">"</div>
+      <div class="why-stats">
+        <div class="why-stat">
+          <div class="why-stat-num">7</div>
+          <div class="why-stat-label">Stage document control lifecycle — creation through to disposal</div>
+        </div>
+        <div class="why-stat">
+          <div class="why-stat-num">2–4</div>
+          <div class="why-stat-label">Weeks to go from document chaos to a fully controlled system</div>
+        </div>
+        <div class="why-stat">
+          <div class="why-stat-num">1</div>
+          <div class="why-stat-label">Single source of truth — the right document, every time, for everyone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<div class="cta-band">
+  <div>
+    <h2>Let's get your documents under control</h2>
+    <p>Tell us where you are today. We'll show you exactly what a controlled system looks like for your business — no obligation, no jargon.</p>
+  </div>
+  <a href="#contact" class="btn-cta">Get In Touch →</a>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div>
+      <span class="chip">Get In Touch</span>
+      <h2 class="sec-title">Let's talk about your documents</h2>
+      <p class="sec-sub">Whether you have 20 documents or 200, we'll give you an honest assessment and show you exactly what a controlled system would look like.</p>
+      <div class="contact-details">
+        <div class="cdet">
+          <div class="cdet-icon">✉️</div>
+          <div><strong>Email</strong><span>hello@blissdocuments.co.uk</span></div>
+        </div>
+        <div class="cdet">
+          <div class="cdet-icon">🌐</div>
+          <div><strong>Website</strong><span>blissdocuments.co.uk</span></div>
+        </div>
+        <div class="cdet">
+          <div class="cdet-icon">📍</div>
+          <div><strong>Location</strong><span>United Kingdom — serving clients nationwide</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane"></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Smith"></div>
+      </div>
+      <div class="form-group"><label>Business Email</label><input type="email" placeholder="jane@yourcompany.co.uk"></div>
+      <div class="form-group"><label>Business Name</label><input type="text" placeholder="Your Company Ltd"></div>
+      <div class="form-group">
+        <label>Sector</label>
+        <select>
+          <option value="">Select your sector…</option>
+          <option>Healthcare / Care Home</option>
+          <option>Startup / Early-Stage Business</option>
+          <option>Professional Services</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group"><label>What do you need help with?</label><textarea placeholder="Tell us briefly about your current document situation…"></textarea></div>
+      <button class="form-submit">Send Enquiry →</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">
+    <svg viewBox="0 0 300 44" xmlns="http://www.w3.org/2000/svg" height="32">
+      <defs>
+        <linearGradient id="fh" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#A0AEC0"/><stop offset="100%" stop-color="#CBD5E0"/>
+        </linearGradient>
+        <linearGradient id="fb" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ED8936"/><stop offset="100%" stop-color="#C05621"/>
+        </linearGradient>
+      </defs>
+      <polygon points="22,2 36,10 36,26 22,34 8,26 8,10" fill="url(#fh)"/>
+      <polygon points="22,4 34,11 34,25 22,32 10,25 10,11" fill="rgba(0,0,0,0.2)"/>
+      <polygon points="22,5 33,12 33,24 22,31 11,24 11,12" fill="url(#fh)"/>
+      <rect x="15" y="12" width="4" height="18" rx="1.2" fill="white"/>
+      <path d="M19 12 L25 12 Q30 12 30 17 Q30 21 25 21.3 Q30.5 21.7 30.5 26.5 Q30.5 31 25 31 L19 31 Z" fill="white"/>
+      <path d="M19 14.5 L24 14.5 Q27 14.5 27 17 Q27 19.2 24 19.2 L19 19.2 Z" fill="url(#fh)"/>
+      <path d="M19 23 L24.5 23 Q28 23 28 26.5 Q28 29.5 24.5 29.5 L19 29.5 Z" fill="url(#fh)"/>
+      <path d="M39 3 L34 14 L39 14 L33 30" stroke="url(#fb)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <text x="48" y="25" font-family="Arial Black, sans-serif" font-weight="900" font-size="20" letter-spacing="-0.5" fill="white">BLISS</text>
+      <text x="49" y="37" font-family="Arial, sans-serif" font-weight="300" font-size="8" letter-spacing="3" fill="rgba(255,255,255,0.3)">DOCUMENT SOLUTIONS</text>
+    </svg>
+  </div>
+  <div class="foot-links">
+    <a href="#services">Services</a>
+    <a href="#sectors">Sectors</a>
+    <a href="#built">Why Us</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="foot-copy">© 2026 Bliss Document Solutions. All rights reserved.</div>
+</footer>
+
+</body>
+</html>
